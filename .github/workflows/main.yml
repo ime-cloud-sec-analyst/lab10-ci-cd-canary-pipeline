@@ -6,27 +6,27 @@ on:
       - main
 
 jobs:
-  terraform-deploy:
+  deploy:
     name: Deploy with Terraform
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.7
+          terraform_version: 1.6.0
 
-      - name: Terraform Init
-        run: terraform init
-        working-directory: ./terraform
+      - name: Initialize Terraform
+        run: terraform -chdir=terraform init
+
+      - name: Terraform Validate
+        run: terraform -chdir=terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
-        working-directory: ./terraform
+        run: terraform -chdir=terraform plan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
-        working-directory: ./terraform
+        run: terraform -chdir=terraform apply -auto-approve
